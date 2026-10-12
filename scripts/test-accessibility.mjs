@@ -1,0 +1,12 @@
+import { readFileSync } from "node:fs";
+import assert from "node:assert/strict";
+const form = readFileSync(new URL("../components/PlaceOrderForm.tsx", import.meta.url), "utf8");
+const css = readFileSync(new URL("../app/globals.css", import.meta.url), "utf8");
+const api = readFileSync(new URL("../app/api/orders/route.ts", import.meta.url), "utf8");
+assert.match(form, /if \(inFlight\.current\) return/);
+assert.match(form, /disabled=\{pending\}/);
+assert.match(form, /Idempotency-Key/);
+assert.match(api, /idempotentOrders\.get\(key\)/);
+assert.match(css, /:focus-visible/);
+assert.match(css, /min-height:\s*44px/);
+console.log("Accessibility and duplicate-submit source checks passed.");
